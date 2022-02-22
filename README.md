@@ -4,10 +4,10 @@ This software program is to calculate diffraction pattern from nanoscale assembl
 This is a program written in matlab, requiring to have a matlab license.
 No additional matlab toolbox is needed.
 ## Installation
-Download codes from the git-but 'code' pulldown menu, for example as a zip. 
+Download codes from the 'code' pulldown menu, for example as a zip. 
 
 ## How to start
-1. Define the source and download folder as your matlab path. If not familiar with this, take a look at the direction from Mathworks. [https://www.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html#:~:text=Change%20Folders%20on%20Search%20Path%20Interactively,-Use%20the%20Set&text=On%20the%20Home%20tab%2C%20in,folders%20to%20MATLAB%20search%20path.]
+1. Define the source and download folders as your matlab path. If not familiar with this, take a look at the direction from Mathworks. [https://www.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html#:~:text=Change%20Folders%20on%20Search%20Path%20Interactively,-Use%20the%20Set&text=On%20the%20Home%20tab%2C%20in,folders%20to%20MATLAB%20search%20path.]
 
 2. On matlab prompt >> spacegroup
 3. You can load 'structure' and 'particle' model from the menu.
