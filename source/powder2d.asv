@@ -1,0 +1,50 @@
+function peak = powder2d(b1, b2, b3, m)
+% function peak = powder2d(b1, b2, b3, m)
+% calculated powder 2d pattern 
+% b1, b2, b3 are the reciprocal lattice vectors
+% m is [h,k,l]s
+%   ex [1,1,1; 1,1,0;...];
+% usage 1
+%   peak = powder2d(b1, b2, b3, [1,1,1;1,1,2;0,1,3])
+% usage 2
+%   peak = powder2d(b1, b2, b3, [1,1,1;1,1,2;0,1,3])
+%
+% see also,
+% generations of lattice vectors:
+%   [a1, a2, a3, b1, b2, b3] = latticevector(5.959, 7.596, 15.6, 81.25,
+% 86.56, 89.8); default : c* is parallel to Z axis (substrate normal)
+%   if you want to rotate coordinate, use eulerRot.
+% cubic_powder2d, BCC, FCC
+%
+
+peak = [];
+if nargin > 3
+    peak = powder(m, b1, b2, b3);
+else
+    for h=0:5
+        for k=h:5
+            for l=k:5
+                m = familyplane([h,k,l]);
+                pp = powder(m, b1, b2, b3);
+                peak = [peak;pp];
+            end
+        end
+    end
+end
+    
+    function pp = powder(m, b1, b2, b3)
+        pp = [];
+        for i=1:numel(m)/3
+            if isallowed(m(i,1), m(i,2), m(i,3))
+               [R, Z] = powdercal(m(i,:), b1, b2, b3);
+                pp = [pp;R,Z];
+            end
+        end
+    end        
+
+    function [R, Z] = powdercal(m, b1, b2, b3)
+       rvector = m(1)*b1 + m(2)*b2 + m(3)*b3;
+       R = sqrt(rvector(:,1)^2+rvector(:,2)^2);
+       Z = rvector(:,3);
+    end
+end
