@@ -1,5 +1,5 @@
 # spacegroup
-This software program is to calculate diffraction pattern from nanoscale assembly. One can build a crystal model with various polyhedra. This program does not support molecular crystal model and thus any cif file format. Once a model is ready, either 2D or 1D SAXS pattern can be calculated. Currently, only 1D powder diffraction may be open to use.
+This software program is to calculate diffraction pattern from nanoscale assembly. It can build a crystal model with various polyhedra. This program does not support molecular crystal model, and thus it not include any cif file format related function. Once a model is ready, either 2D or 1D SAXS pattern can be calculated. Currently, only 1D powder diffraction may be open to use.
 ## Requirement
 This is a program written in matlab, requiring to have a matlab license.
 No additional matlab toolbox is needed.
