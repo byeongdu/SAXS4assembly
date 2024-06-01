@@ -71,9 +71,12 @@ for i=1:numel(alllines)
         dt = split(dt{2}, "VOLUME=");
         vol = str2double(dt{2});
         p_str = strtrim(dt{1});
-        strv = split(p_str, '  ');
+        %strv = split(p_str, '  ');
+        strv = split(p_str, {' ', '='});
+        k = cell2mat(cellfun(@isempty, strv, 'UniformOutput', false));
+        strv(k) = [];
         for k=1:2:numel(strv)
-            eval([strv{k}, strv{k+1}, ';']);
+            eval([strv{k}, '=', strv{k+1}, ';']);
         end
         % if contains(p_str, "A=")
         %     strv = split(p_str, "A=");
