@@ -1,0 +1,46 @@
+Particles Info
+Number of particles: 2
+Number : 1
+shape : sphere
+positioninput : [0, 0, 0]
+centering : 0
+position2 : []
+position : 0  0  0
+orientationfactor : 0
+edgelength : 50
+edgelength_sig : 0
+rho : 4.66
+Lshell : []
+SOF : 1
+color : r
+TfactorB : 0
+OrientationType : Euler
+Rotmat : ;1  0  0;0  1  0;0  0  1
+Rotstring1 : 0
+Rotstring2 : 0
+Rotstring3 : 0
+rotangle : 0  0  0
+radius : 45
+radius_sig : 2.25
+Number : 2
+shape : sphere
+positioninput : [0.25, 0.5, 0]
+centering : 0
+position2 : []
+position : 0.25         0.5           0
+orientationfactor : 0
+edgelength : 50
+edgelength_sig : 0
+rho : 4.66
+Lshell : []
+SOF : 0.93
+color : r
+TfactorB : 0
+OrientationType : Euler
+Rotmat : ;1  0  0;0  1  0;0  0  1
+Rotstring1 : 0
+Rotstring2 : 0
+Rotstring3 : 0
+rotangle : 0  0  0
+radius : 45
+radius_sig : 2.25

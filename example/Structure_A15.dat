@@ -1,0 +1,14 @@
+Structure Info
+Spacegroup: 223:  P m -3 n
+Latticesystem: cubic       
+Lattice parameter: 699.000 699.000 699.000 90.000 90.000 90.000
+Dmin: 20
+qmax: 0.3142
+ddsp (mean displancement/nearest neighbor distance): 0.02
+peak width: 
+B factor: 0.0002
+Scale factor: 0.014
+Domain size (A): 8000
+Microstrain (fraction): 0.013
+Is the diffusescattering included: 1
+Diffuse scattering: [0.08, 100, 1E-6, 4]
