@@ -1,5 +1,5 @@
 # Overview
-This is a software package for Small Angle X-ray Scattering (SAXS) from nanoparticle assemblies. There are several GUIs for different jobs. 
+This is a software package for Small Angle Scattering (SAXS or SANS) from nanoparticle assemblies. There are several GUIs for different jobs. 
 ## Indexing
 This program is to index SAXS powder diffraction patterns in q space. 
 ## Spacegroup
