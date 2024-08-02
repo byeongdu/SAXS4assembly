@@ -1,5 +1,5 @@
 # Overview
-This is a software package for Small Angle Scattering (SAXS or SANS) from nanoparticle assemblies. There are several GUIs for different jobs. 
+This is a software package for Small Angle Scattering (SAXS or SANS) from self-assemblies. Building blocks can be geometric objects (such as nanoparticles), atomic coordinates (such as proteins), or voxel models. There are several GUIs for different jobs. 
 ## Indexing
 This program is to index SAXS powder diffraction patterns in q space. 
 ## Spacegroup
