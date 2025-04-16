@@ -11,7 +11,7 @@ This program is to visualize the CCP4 format volumetric data. It will be ideal i
 <img src="images\drawccp4.png" width="500">
 # Requirement
 This is a program written in matlab, requiring to have a matlab license.
-No additional matlab toolbox is needed.
+You may need https://github.com/byeongdu/SAXSimagviewer if you simulate diffraction in 2D.
 
 # Installation
 Clone the package with git, or download codes from the 'code' pulldown menu, for example as a zip. 
