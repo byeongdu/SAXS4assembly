@@ -22,7 +22,7 @@ function varargout = TEMprojectionOptions(varargin)
 
 % Edit the above text to modify the response to help TEMprojectionOptions
 
-% Last Modified by GUIDE v2.5 27-Mar-2025 16:23:37
+% Last Modified by GUIDE v2.5 29-May-2025 17:31:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -337,15 +337,12 @@ function make3D(hd)
     %hd = guihandles(fobj);
     xf = str2double(hd.edxf.String);
     yf = str2double(hd.edyf.String);
-    dx = str2double(hd.eddx.String);
-    dz = str2double(hd.eddz.String);
+    Nx = str2double(hd.eddx.String);
+    Nz = str2double(hd.eddz.String);
     thick = str2double(hd.edthick.String);
     mu = str2double(hd.edmu.String);
     hklZ = eval(hd.edhklZ.String);
     hklX = eval(hd.edhklX.String);
-    xx = 0:dx:xf;
-    yy = 0:dx:yf;
-    zz = 0:dz:thick;
     
     % dark
     IsoSurfLevel = getappdata(fh, 'isovalue');
@@ -360,33 +357,58 @@ function make3D(hd)
     Z0 = hklZ;
     X0 = hklX;
     vtype = 'R = ';
+    matZ = eye(3);matX = eye(3);
     if hd.rb_real.Value
-        hklZ = hklZ*cellinfo.mat';
-        % % or Z = Z*cellinfo.latticevectors;
-        hklX = hklX*cellinfo.mat';
-        % % or Z = Z*cellinfo.latticevectors;
-        vtype = 'R_{hkl} = ';
+        matZ = cellinfo.latticevectors;
+        vtypeZ = 'R_{hkl} = ';
     end
     if hd.rb_rcp.Value
-        hklZ = hklZ*cellinfo.recimat';
-        % % or Z = Z*cellinfo.latticevectors;
-        hklX = hklX*cellinfo.recimat';
-        % % or Z = Z*cellinfo.latticevectors;
-        vtype = 'G_{hkl} = ';
+        matZ = cellinfo.recilatticevectors;
+        vtypeZ = 'G_{hkl} = ';
+    end
+    if hd.rb_realH.Value
+        matX = cellinfo.latticevectors;
+        vtypeX = 'R_{hkl} = ';
+    end
+    if hd.rb_rcpH.Value
+        matX = cellinfo.recilatticevectors;
+        vtypeX = 'G_{hkl} = ';
     end
     
+    % hklZ and hklX are the input vectors in the cartesian coordinates.
+    hklZ = hklZ*matZ;
+    hklX = hklX*matX;
+    % hklXn is the projected hklX onto the normal plane of hklZ.
+    hklXn = proj2plane(hklX, hklZ);
+    hklXn = hklXn/norm(hklXn);
+        
+    u = unitcell(cellinfo);
+    pt = projPointOnLine3d(u.vertices, [0,0,0,hklZ]);
+    thickness_for_a_cell = max(distNzero(pt));
+    fprintf('Projecting %s onto a plane defined by HKL along Z\n', sprintf('%s[%i,%i,%i] direction',vtypeX, X0))
+    fprintf('Thickness of unitcell along HKL is %0.2f\n', thickness_for_a_cell)
+    
+    % recontruct 3D volume with a new orientation.
+    xx = linspace(0, xf, Nx);
+    yy = linspace(0, yf, Nx);
+    thick = thick*thickness_for_a_cell;
+    zz = linspace(0, thick, Nz);
+
     isovalue = getappdata(fh, 'isovalue');
-    [Vox, fm] = voxreconstruct(xx, yy, zz, hklZ, hklX, {Xax, Yax, Zax, map3D}, ...
+    [Vox, fm, U] = voxreconstruct(xx, yy, zz, hklZ, hklXn, {Xax, Yax, Zax, map3D}, ...
         cellinfo, isovalue, 'absolute');
-    xlabel(sprintf('%s[%i,%i,%i] direction',vtype, X0), 'fontsize', 15, 'color', 'g')
-    zlabel(sprintf('%s[%i,%i,%i] direction',vtype, Z0), 'fontsize', 15, 'color', 'r')
-    U = rotate_plane_onto_XY(hklZ, hklX);
+    xlabel(sprintf('%s[%i,%i,%i] direction',vtypeX, X0), 'fontsize', 15, 'color', 'g')
+    zlabel(sprintf('%s[%i,%i,%i] direction',vtypeZ, Z0), 'fontsize', 15, 'color', 'r')
+    %U = rotate_plane_onto_XY(hklZ, hklX);
     dz = dspacing(Z0, cellinfo, 'triclinic');
     %dz = dspacing('triclinic', Z0, cellinfo);
     dx = dspacing(X0, cellinfo, 'triclinic');
-    hklZ = hklZ*inv(U);
+    
+    % hklZ and hklX to draw.
+    hklZ = hklZ*U';
     hklz = hklZ/norm(hklZ)*dz;
-    hklx = hklX*inv(U)/norm(hklX)*dx;
+    %hklx = hklX*inv(U)/norm(hklX)*dx;
+    hklx = hklX*U'/norm(hklX)*dx;
     O = [0, 0, 0];
     k=arrow3(O, hklz, 'r1', 0.2);
     set(k(1), 'linestyle', '-', 'color', 'r');
@@ -625,3 +647,26 @@ function pb_make1repeating_Callback(hObject, eventdata, handles)
     f2 = uimenu(h, 'Label','Process');
     uimenu('Parent',f2,'Label','Convert Patches to Objects','Callback',@Patch2Object);
     uimenu('Parent',f2,'Label','Integrate XY planes','Callback',@integrateXYplane);
+
+
+
+function ed_hklX_Callback(hObject, eventdata, handles)
+% hObject    handle to edhklX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edhklX as text
+%        str2double(get(hObject,'String')) returns contents of edhklX as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ed_hklX_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edhklX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

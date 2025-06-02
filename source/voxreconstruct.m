@@ -1,4 +1,4 @@
-function [img, h] = voxreconstruct(x, y, z, Zdir, Ydir, Vox, cellinfo, isovalue, type_of_isovalue)
+function [img, h, U] = voxreconstruct(x, y, z, Zdir, Ydir, Vox, cellinfo, isovalue, type_of_isovalue)
 % voxreconstruct(x, y, z, Zdir, Ydir, map3D, cellinfo, [isovalue], [type_of_isovalue])
 % 
 % When a unit cell vox is given, this program recontruct the map into new
@@ -33,8 +33,7 @@ function [img, h] = voxreconstruct(x, y, z, Zdir, Ydir, Vox, cellinfo, isovalue,
 % see also
 % transformUC.m
 
-
-[Vx, Vy, Vz] = slice2film(x, y, z, Zdir, Ydir);
+[Vx, Vy, Vz, U] = slice2film(x, y, z, Zdir, Ydir);
 np = cartesian2fractional([Vx(:), Vy(:), Vz(:)], cellinfo);
 %np = [Vx(:), Vy(:), Vz(:)]*inv(cellinfo.mat)';
 fracX = np(:,1);

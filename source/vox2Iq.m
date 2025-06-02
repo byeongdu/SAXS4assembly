@@ -108,11 +108,11 @@ end
 Iq = abs(F).^2;
 Iq = Iq./max(Iq, [], 'all');
 if nargin > 1
-    if (dimdt == 3) && (numel(vox_size) == 1)
+    if (dimdt == 3) && (isscalar(vox_size))
         vox_size(2) = vox_size(1);
         vox_size(3) = vox_size(1);
     end
-    if (dimdt == 2) && (numel(vox_size) == 1)
+    if (dimdt == 2) && (isscalar(vox_size))
         vox_size(2) = vox_size(1);
     end
     qx = 1:size(Iq, 1);
