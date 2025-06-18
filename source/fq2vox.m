@@ -8,11 +8,13 @@ function [Vox, x, y, z, vox] = fq2vox(Fq, dq, varargin)
 % 12/26/2019
 
 maxsize = 256;
-
+isreq_fftshift = false;
 for i=1:2:numel(varargin)-1
     switch varargin{i}
         case 'maxsize'
             maxsize = varargin{i+1};
+        case 'fftshift'
+            isreq_fftshift = varargin{i+1};
     end
 end
 
@@ -60,22 +62,27 @@ if dimdt == 3
 else
     Fq = padarray(Fq, [Na, Nb], 0, 'both');
 end
-
-vox = ifftn(Fq);
-vox = ifftshift(vox, 1);
-vox = ifftshift(vox, 2);
-if dimdt == 3
-    vox = ifftshift(vox, 3);
+if isreq_fftshift
+    Fq = ifftshift(Fq);
 end
+vox = ifftn(Fq);
+if isreq_fftshift
+    vox = ifftshift(vox);
+end
+% vox = ifftshift(vox, 1);
+% vox = ifftshift(vox, 2);
+% if dimdt == 3
+%     vox = ifftshift(vox, 3);
+% end
 %Iq = abs(F).^2;
 Vox = vox;
 Vox = Vox./max(Vox, [], 'all');
 if nargin > 1
-    if (dimdt == 3) && (numel(dq) == 1)
+    if (dimdt == 3) && (isscalar(dq))
         dq(2) = dq(1);
         dq(3) = dq(1);
     end
-    if (dimdt == 2) && (numel(dq) == 1)
+    if (dimdt == 2) && (isscalar(dq))
         dq(2) = dq(1);
     end
     x = 1:size(Vox, 2);

@@ -12,6 +12,7 @@ function [Iq, qx, qy, qz, F, F2] = vox2Iq(dt, vox_size, varargin)
 maxsize = 256;
 F2 = [];
 isRetF2 = false;
+isReq_fftshift = false;
 if nargout==6
     isRetF2 = true;
 end
@@ -31,6 +32,8 @@ for i=1:2:numel(varargin)-1
             else
                 backg = varargin{i+1};
             end
+        case 'fftshift'
+            isReq_fftshift = varargin{i+1};
     end
 end
 
@@ -91,20 +94,19 @@ else
 end
 
 if isRetF2
-    F2 = fftn(dt);
-    F2 = fftshift(F2, 1);
-    F2 = fftshift(F2, 2);
-    if dimdt == 3
-        F2 = fftshift(F2, 3);
+    if isReq_fftshift
+        dt = fftshift(dt);
     end
+    F2 = fftn(dt);
+    F2 = fftshift(F2);
 end
 
-F = fftn(dtn);
-F = fftshift(F, 1);
-F = fftshift(F, 2);
-if dimdt == 3
-    F = fftshift(F, 3);
+if isReq_fftshift
+    dtn = fftshift(dtn);
 end
+F = fftn(dtn);
+F = fftshift(F);
+
 Iq = abs(F).^2;
 Iq = Iq./max(Iq, [], 'all');
 if nargin > 1
