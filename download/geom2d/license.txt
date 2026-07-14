@@ -1,6 +1,4 @@
-Copyright (c) 2017, INRA
-Copyright (c) 2015, Yazan Ahed
-Copyright (c) 2009, NS
+Copyright (c) 2014, Peter Caday
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
